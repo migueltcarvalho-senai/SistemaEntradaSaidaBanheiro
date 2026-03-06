@@ -1,137 +1,126 @@
-const mesesNomes = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-];
+document.addEventListener("DOMContentLoaded", () => {
+    const dataAtual = new Date();
+    let mesAtual = dataAtual.getMonth();
+    let anoAtual = dataAtual.getFullYear();
 
-let dataAtual = new Date();
-let mesAtual = dataAtual.getMonth();
-let anoAtual = dataAtual.getFullYear();
+    const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-const monthsTabs = document.getElementById('monthsTabs');
-const mesAnoTitulo = document.getElementById('mesAnoTitulo');
-const calendarDays = document.getElementById('calendarDays');
-const detalhesTitulo = document.getElementById('detalhesTitulo');
-const tbodyDetalhes = document.getElementById('tbodyDetalhes');
+    const mesAnoLabel = document.getElementById("mesAnoAtual");
+    const grid = document.getElementById("calendarioGrid");
+    const labelSelection = document.getElementById("dataSelecionadaLabel");
 
-// Funções utilitárias
-function formatarHora(dataStr) {
-    if (!dataStr) return '-';
-    const partes = dataStr.split(' ');
-    if (partes.length === 2) {
-        return partes[1].substring(0, 5);
-    }
-    return dataStr;
-}
-
-function formatarDataBR(ano, mes, dia) {
-    const d = dia.toString().padStart(2, '0');
-    const m = (mes + 1).toString().padStart(2, '0');
-    return `${d}/${m}/${ano}`;
-}
-
-// Inicia as abas de meses
-function renderizarAbas() {
-    monthsTabs.innerHTML = '';
-    mesesNomes.forEach((nome, index) => {
-        const btn = document.createElement('button');
-        btn.className = `month-tab ${index === mesAtual ? 'active' : ''}`;
-        btn.textContent = nome;
-        btn.onclick = () => {
-            mesAtual = index;
-            renderizarCalendario();
-        };
-        monthsTabs.appendChild(btn);
-    });
-}
-
-function renderizarCalendario() {
-    // Atualiza Abas visualmente
-    Array.from(monthsTabs.children).forEach((btn, index) => {
-        btn.className = `month-tab ${index === mesAtual ? 'active' : ''}`;
-    });
-
-    // Atualiza Titulo
-    mesAnoTitulo.textContent = `${mesesNomes[mesAtual]} de ${anoAtual}`;
-
-    calendarDays.innerHTML = '';
-
-    const primeiroDiaMes = new Date(anoAtual, mesAtual, 1).getDay();
-    const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
-
-    // Células vazias antes do dia 1 (Domingo = 0)
-    for (let i = 0; i < primeiroDiaMes; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'cal-day-cell empty';
-        calendarDays.appendChild(emptyCell);
+    function renderizarListaSemana() {
+        diasSemana.forEach(d => {
+            const div = document.createElement("div");
+            div.className = "dia-semana";
+            div.innerText = d;
+            grid.appendChild(div);
+        });
     }
 
-    const hoje = new Date();
+    function renderizarCalendario(mes, ano) {
+        grid.innerHTML = "";
+        mesAnoLabel.innerText = `${meses[mes]} ${ano}`;
+        renderizarListaSemana();
 
-    // Dias do mês
-    for (let dia = 1; dia <= diasNoMes; dia++) {
-        const cell = document.createElement('div');
-        cell.className = 'cal-day-cell';
-        cell.textContent = dia;
+        const primeiroDiaMes = new Date(ano, mes, 1).getDay();
+        const numDiasMes = new Date(ano, mes + 1, 0).getDate();
 
-        if (dia === hoje.getDate() && mesAtual === hoje.getMonth() && anoAtual === hoje.getFullYear()) {
-            cell.classList.add('today');
+        // Blocos vazios (dias antes do dia 1 do mês atual)
+        for(let i = 0; i < primeiroDiaMes; i++) {
+            const div = document.createElement("div");
+            div.className = "dia vazio";
+            grid.appendChild(div);
         }
 
-        cell.onclick = () => {
-            // Remove active das outras células
-            document.querySelectorAll('.cal-day-cell').forEach(c => c.classList.remove('d-active'));
-            cell.classList.add('d-active');
+        // Blocos numéricos do mês
+        const hojeH = new Date();
+        for(let dia = 1; dia <= numDiasMes; dia++) {
+            const div = document.createElement("div");
+            div.className = "dia";
+            div.innerText = dia;
+            
+            // Marca o dia atual (hoje visual)
+            if (dia === hojeH.getDate() && mes === hojeH.getMonth() && ano === hojeH.getFullYear()) {
+                div.classList.add("hoje");
+                div.classList.add("selecionado");
+            }
 
-            buscarRegistrosDia(anoAtual, mesAtual, dia);
-        };
-
-        calendarDays.appendChild(cell);
-    }
-}
-
-async function buscarRegistrosDia(ano, mes, dia) {
-    const dataFormatada = `${ano}-${(mes + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
-    const dataBR = formatarDataBR(ano, mes, dia);
-
-    detalhesTitulo.textContent = `Detalhes do dia: ${dataBR}`;
-    tbodyDetalhes.innerHTML = '<tr><td colspan="4" class="text-center" style="padding: 2rem;">Carregando...</td></tr>';
-
-    try {
-        const res = await fetch(`api/calendario.php?data=${dataFormatada}`);
-        const json = await res.json();
-
-        if (json.registros && json.registros.length > 0) {
-            tbodyDetalhes.innerHTML = '';
-            json.registros.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${r.nome}</strong></td>
-                    <td>${formatarHora(r.hora_saida)}</td>
-                    <td>${r.hora_retorno ? formatarHora(r.hora_retorno) : 'Em aberto'}</td>
-                    <td>${r.duracao_minutos !== null ? r.duracao_minutos + ' min' : '-'}</td>
-                `;
-                tbodyDetalhes.appendChild(tr);
+            // Evento de clique para o usuário
+            div.addEventListener("click", () => {
+                document.querySelectorAll(".dia").forEach(d => d.classList.remove("selecionado"));
+                div.classList.add("selecionado");
+                
+                // Conversão YYYY-MM-DD
+                const mStr = String(mes + 1).padStart(2, '0');
+                const dStr = String(dia).padStart(2, '0');
+                const isoDate = `${ano}-${mStr}-${dStr}`;
+                
+                labelSelection.innerText = `${dStr}/${mStr}/${ano}`;
+                buscarRegistros(isoDate);
             });
-        } else {
-            tbodyDetalhes.innerHTML = `<tr><td colspan="4" class="empty-state text-center" style="padding: 2rem;">Nenhum registro encontrado para esta data.</td></tr>`;
+
+            grid.appendChild(div);
         }
-    } catch (error) {
-        tbodyDetalhes.innerHTML = `<tr><td colspan="4" class="empty-state text-center" style="padding: 2rem; color:red;">Erro ao buscar dados.</td></tr>`;
+    }
+
+    document.getElementById("btnAnterior").addEventListener("click", () => {
+        mesAtual--;
+        if(mesAtual < 0) {
+            mesAtual = 11;
+            anoAtual--;
+        }
+        renderizarCalendario(mesAtual, anoAtual);
+    });
+
+    document.getElementById("btnProximo").addEventListener("click", () => {
+        mesAtual++;
+        if(mesAtual > 11) {
+            mesAtual = 0;
+            anoAtual++;
+        }
+        renderizarCalendario(mesAtual, anoAtual);
+    });
+
+    // Run do calendário
+    renderizarCalendario(mesAtual, anoAtual);
+    
+    // Auto-carrega logs do dia de hoje (ao inicializar página)
+    const mStrInit = String(dataAtual.getMonth()+1).padStart(2, '0');
+    const dStrInit = String(dataAtual.getDate()).padStart(2, '0');
+    labelSelection.innerText = `${dStrInit}/${mStrInit}/${dataAtual.getFullYear()}`;
+    buscarRegistros(`${dataAtual.getFullYear()}-${mStrInit}-${dStrInit}`);
+});
+
+async function buscarRegistros(isoDate) {
+    const area = document.getElementById("resultadoArea");
+    area.innerHTML = "<p>Carregando histórico...</p>";
+    
+    try {
+        const req = await fetch(`api/calendario.php?data=${isoDate}`);
+        const res = await req.json();
+
+        if (res.status === "success" && res.registros.length > 0) {
+            let html = `<table><tr><th>Aluno</th><th>Horários</th><th>Duração</th></tr>`;
+            res.registros.forEach(r => {
+                // Previne null se aluno não tiver retornado no dia pesquisado
+                const retStr = r.hora_retorno ? r.hora_retorno.split(" ")[1] : '<span class="status-andamento">Aberto/Pendente</span>';
+                const saidaStr = r.hora_saida.split(" ")[1];
+                const durStr = r.tempo_gasto !== null ? `<span style="color:var(--status-concluido);">${r.tempo_gasto}m</span>` : '-';
+                
+                html += `<tr>
+                    <td><strong>${r.nome}</strong><br><small>ID: ${r.id_alunos}</small></td>
+                    <td>${saidaStr} as ${retStr}</td>
+                    <td><strong>${durStr}</strong></td>
+                </tr>`;
+            });
+            html += `</table>`;
+            area.innerHTML = html;
+        } else {
+            area.innerHTML = "<p>Sem movimentação neste dia.</p>";
+        }
+    } catch(e) {
+        area.innerHTML = "<p style='color:red;'>Erro de comunicação com a API ao tentar buscar o histórico (Offline).</p>";
     }
 }
-
-// Botões de passar ano
-document.getElementById('btnPrevYear').addEventListener('click', () => {
-    anoAtual--;
-    renderizarCalendario();
-});
-
-document.getElementById('btnNextYear').addEventListener('click', () => {
-    anoAtual++;
-    renderizarCalendario();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    renderizarAbas();
-    renderizarCalendario();
-});

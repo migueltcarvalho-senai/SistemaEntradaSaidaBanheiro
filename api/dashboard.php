@@ -1,24 +1,17 @@
 <?php
-header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+require_once '../config/database.php';
+require_once '../models/Registro.php';
 
-include_once '../config/database.php';
-include_once '../models/Registro.php';
+$db = Database::getInstance();
+$registro = new Registro($db);
 
-$registro = new Registro($conn);
+$estatisticas = $registro->getEstatisticasHoje();
+$ranking = $registro->getRankingHoje();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $gerais = $registro->getEstatisticasGeraisHoje();
-    $alunos = $registro->getAlunosSaidasHoje();
-    $ranking = $registro->getRankingHoje();
-
-    echo json_encode(array(
-        "estatisticas" => $gerais,
-        "alunos" => $alunos,
-        "ranking" => $ranking
-    ));
-}
+echo json_encode([
+    "status" => "success",
+    "estatisticas" => $estatisticas,
+    "ranking" => $ranking
+]);
 ?>

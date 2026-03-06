@@ -1,88 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Saída - Calendário</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Histórico - Controle de Banheiro</title>
+    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <style>
+        .calendario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .calendario-header button {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+        .calendario-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .dia-semana {
+            text-align: center;
+            font-weight: bold;
+            color: var(--text-secondary);
+            padding: 10px 0;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .dia {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            text-align: center;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .dia:hover:not(.vazio) {
+            background: #f8fafc;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--btn-start);
+        }
+        .dia.vazio {
+            background: transparent;
+            border: none;
+            cursor: default;
+            box-shadow: none;
+        }
+        .dia.hoje {
+            border: 2px solid var(--btn-start);
+            font-weight: 800;
+        }
+        .dia.selecionado {
+            background: var(--btn-start);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 150, 209, 0.3);
+        }
+    </style>
 </head>
-
 <body>
-    <!-- Barra de Navegação Superior -->
-    <nav class="top-nav">
-        <div class="nav-container">
-            <button class="nav-btn" onclick="window.location.href='index.html'">Controle de saida</button>
-            <button class="nav-btn" onclick="window.location.href='dashboard.html'">Dashboard</button>
-            <button class="nav-btn active" onclick="window.location.href='calendario.html'">Calendário</button>
-        </div>
-    </nav>
-
-    <div class="container container-large">
-        <header class="header">
-            <h1>Calendário de saídas</h1>
-            <p>Calendário</p>
+    <div class="container">
+        <header>
+            <h1>Histórico de Acesso ao Banheiro</h1>
+            <nav>
+                <a href="index.html">Início</a>
+                <a href="dashboard.html">Estatísticas</a>
+                <a href="calendario.html">Histórico</a>
+            </nav>
         </header>
 
-        <main class="main-content">
-            <!-- Painel do Calendário -->
-            <section class="panel cal-panel">
-                <div class="months-tabs" id="monthsTabs">
-                    <!-- Gerado via JS -->
+        <main style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="card" style="align-self: start;">
+                <div class="calendario-header">
+                    <button id="btnAnterior">&lt; Anterior</button>
+                    <h2 id="mesAnoAtual" style="margin:0; border:none; padding:0;">Mês Ano</h2>
+                    <button id="btnProximo">Próximo &gt;</button>
                 </div>
+                
+                <div class="calendario-grid" id="calendarioGrid">
+                    <!-- Gerado via JavaScript -->
+                </div>
+            </div>
 
-                <!-- Controle do ano também, caso precise voltar anos (Opcional, mas útil) -->
-                <div class="cal-header-title">
-                    <button id="btnPrevYear" class="btn-icon">&laquo;</button>
-                    <h2 id="mesAnoTitulo">-- de ----</h2>
-                    <button id="btnNextYear" class="btn-icon">&raquo;</button>
+            <div class="card" style="align-self: start;">
+                <h2>Registros de: <span id="dataSelecionadaLabel" style="color:var(--status-andamento);">Selecione um dia</span></h2>
+                <div id="resultadoArea" style="margin-top:20px;">
+                    <p>Clique em um dia no calendário para visualizar os registros.</p>
                 </div>
-
-                <div class="cal-grid">
-                    <!-- Cabeçalho da Semana -->
-                    <div class="cal-day-header">Dom</div>
-                    <div class="cal-day-header">Seg</div>
-                    <div class="cal-day-header">Ter</div>
-                    <div class="cal-day-header">Qua</div>
-                    <div class="cal-day-header">Qui</div>
-                    <div class="cal-day-header">Sex</div>
-                    <div class="cal-day-header">Sab</div>
-                </div>
-
-                <div id="calendarDays" class="cal-grid-days">
-                    <!-- Gerado via JS -->
-                </div>
-            </section>
-
-            <!-- Detalhes do Dia Selecionado -->
-            <section class="panel history-panel" id="detailsPanel">
-                <div class="panel-header">
-                    <h2 id="detalhesTitulo">Detalhes do dia</h2>
-                </div>
-                <div class="table-container">
-                    <table id="tabelaDetalhes">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Saída</th>
-                                <th>Retorno</th>
-                                <th>Duração</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbodyDetalhes">
-                            <tr>
-                                <td colspan="4" class="empty-state text-center" style="padding: 2rem;">Selecione um dia
-                                    para ver os registros</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            </div>
         </main>
     </div>
-
+    <script src="js/ui.js"></script>
     <script src="js/calendario.js"></script>
 </body>
-
 </html>

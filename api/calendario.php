@@ -1,24 +1,17 @@
 <?php
-header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+require_once '../config/database.php';
+require_once '../models/Registro.php';
 
-include_once '../config/database.php';
-include_once '../models/Registro.php';
+$db = Database::getInstance();
+$registro = new Registro($db);
 
-$registro = new Registro($conn);
+$data = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d');
+$registros = $registro->getRegistrosPorData($data);
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['data']) && !empty($_GET['data'])) {
-        $dataStr = $_GET['data']; // Esperado YYYY-MM-DD
-        
-        $lista = $registro->getRegistrosPorData($dataStr);
-
-        echo json_encode(array(
-            "registros" => $lista,
-            "total" => count($lista)
-        ));
-    } else {
-        echo json_encode(array("mensagem" => "Por favor, forneça o parâmetro 'data'.", "status" => "error"));
-    }
-}
+echo json_encode([
+    "status" => "success",
+    "data" => $data,
+    "registros" => $registros
+]);
 ?>

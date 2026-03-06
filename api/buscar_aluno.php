@@ -1,25 +1,21 @@
 <?php
-header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+require_once '../config/database.php';
+require_once '../models/Aluno.php';
 
-include_once '../config/database.php';
-include_once '../models/Aluno.php';
+$db = Database::getInstance();
+$aluno = new Aluno($db);
 
-$aluno = new Aluno($conn);
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-if (isset($_GET['id']) && !empty($_GET['id'])) {
-    $id = $_GET['id'];
-    if ($aluno->getAlunoById($id)) {
-        echo json_encode(array(
-            "encontrado" => true,
-            "nome" => $aluno->nome
-        ));
+if ($id > 0) {
+    $dados = $aluno->getAlunoById($id);
+    if ($dados) {
+        echo json_encode(["status" => "success", "aluno" => $dados]);
     } else {
-        echo json_encode(array(
-            "encontrado" => false
-        ));
+        echo json_encode(["status" => "error", "message" => "Aluno não encontrado"]);
     }
 } else {
-    echo json_encode(array("encontrado" => false));
+    echo json_encode(["status" => "error", "message" => "ID inválido"]);
 }
 ?>
