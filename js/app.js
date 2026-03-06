@@ -6,6 +6,7 @@ const msgBox = document.getElementById('mensagemBox');
 const containerAtivo = document.getElementById('alunoAtivoContainer');
 const listaFila = document.getElementById('listaFila');
 const tbodyRegistros = document.getElementById('tbodyRegistros');
+const nomePreview = document.getElementById('nomeAlunoPreview');
 
 let tempoInterval = null;
 
@@ -162,6 +163,33 @@ btnRegistrar.addEventListener('click', async () => {
 
 inputIdAluno.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') btnRegistrar.click();
+});
+
+// Busca em tempo real pelo ID
+inputIdAluno.addEventListener('input', async (e) => {
+    const id = e.target.value.trim();
+
+    if (!id) {
+        nomePreview.textContent = '';
+        nomePreview.classList.add('hidden-preview');
+        return;
+    }
+
+    try {
+        const res = await fetch(`api/buscar_aluno.php?id=${id}`);
+        const json = await res.json();
+
+        if (json.encontrado) {
+            nomePreview.textContent = `👤 Aluno: ${json.nome}`;
+            nomePreview.classList.remove('hidden-preview');
+        } else {
+            nomePreview.textContent = '❌ Aluno não encontrado';
+            nomePreview.classList.remove('hidden-preview');
+        }
+    } catch (err) {
+        nomePreview.textContent = '';
+        nomePreview.classList.add('hidden-preview');
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {

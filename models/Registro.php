@@ -141,5 +141,21 @@ class Registro
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // --- MÉTODOS PARA O CALENDÁRIO ---
+
+    // Pega todos os registros de uma data específica (YYYY-MM-DD)
+    public function getRegistrosPorData($dataStr)
+    {
+        $query = "SELECT r.id, r.id_alunos as id_aluno, r.hora_saida, r.hora_retorno, r.duracao_minutos, r.status_alunos, a.nome 
+                  FROM registros_saida r
+                  JOIN alunos a ON r.id_alunos = a.id
+                  WHERE DATE(r.hora_saida) = :dataStr
+                  ORDER BY r.hora_saida DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":dataStr", $dataStr);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

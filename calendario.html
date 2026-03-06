@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Saída - Calendário</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Barra de Navegação Superior -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <button class="nav-btn" onclick="window.location.href='index.html'">Controle de saida</button>
+            <button class="nav-btn" onclick="window.location.href='dashboard.html'">Dashboard</button>
+            <button class="nav-btn active" onclick="window.location.href='calendario.html'">Calendário</button>
+        </div>
+    </nav>
+
+    <div class="container container-large">
+        <header class="header">
+            <h1>Calendário de saídas</h1>
+            <p>Calendário</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Painel do Calendário -->
+            <section class="panel cal-panel">
+                <div class="months-tabs" id="monthsTabs">
+                    <!-- Gerado via JS -->
+                </div>
+
+                <!-- Controle do ano também, caso precise voltar anos (Opcional, mas útil) -->
+                <div class="cal-header-title">
+                    <button id="btnPrevYear" class="btn-icon">&laquo;</button>
+                    <h2 id="mesAnoTitulo">-- de ----</h2>
+                    <button id="btnNextYear" class="btn-icon">&raquo;</button>
+                </div>
+
+                <div class="cal-grid">
+                    <!-- Cabeçalho da Semana -->
+                    <div class="cal-day-header">Dom</div>
+                    <div class="cal-day-header">Seg</div>
+                    <div class="cal-day-header">Ter</div>
+                    <div class="cal-day-header">Qua</div>
+                    <div class="cal-day-header">Qui</div>
+                    <div class="cal-day-header">Sex</div>
+                    <div class="cal-day-header">Sab</div>
+                </div>
+
+                <div id="calendarDays" class="cal-grid-days">
+                    <!-- Gerado via JS -->
+                </div>
+            </section>
+
+            <!-- Detalhes do Dia Selecionado -->
+            <section class="panel history-panel" id="detailsPanel">
+                <div class="panel-header">
+                    <h2 id="detalhesTitulo">Detalhes do dia</h2>
+                </div>
+                <div class="table-container">
+                    <table id="tabelaDetalhes">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Saída</th>
+                                <th>Retorno</th>
+                                <th>Duração</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyDetalhes">
+                            <tr>
+                                <td colspan="4" class="empty-state text-center" style="padding: 2rem;">Selecione um dia
+                                    para ver os registros</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/calendario.js"></script>
+</body>
+
+</html>

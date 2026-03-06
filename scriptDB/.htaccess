@@ -1,0 +1,8 @@
+# Negar acesso a todos os arquivos e diretórios dentro desta pasta
+Order Allow,Deny
+Deny from all
+
+# Opcional (se o servidor for Apache 2.4+)
+<RequireAll>
+    Require all denied
+</RequireAll>

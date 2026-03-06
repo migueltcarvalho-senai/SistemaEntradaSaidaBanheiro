@@ -1,12 +1,18 @@
 /* Variáveis e Reset com base no pallete.png */
 :root {
-    --bg-color: #F0EBD8;       /* Bege Pastel (60%) */
-    --panel-bg: #FFFFFF;       /* Branco para contraste dos painéis */
-    --primary-color: #1D2D44;  /* Azul Marinho Escuro (10% - Destaques básicos) */
-    --action-color: #0D1321;   /* Preto/Azul Profundo (Textos Principais e Botões de Ação) */
-    --secondary-color: #748CAB;/* Azul Suave (30% - Apoio visual) */
-    --border-color: #3E5C76;   /* Azul Cinzento (Bordas) */
-    
+    --bg-color: #F0EBD8;
+    /* Bege Pastel (60%) */
+    --panel-bg: #FFFFFF;
+    /* Branco para contraste dos painéis */
+    --primary-color: #1D2D44;
+    /* Azul Marinho Escuro (10% - Destaques básicos) */
+    --action-color: #0D1321;
+    /* Preto/Azul Profundo (Textos Principais e Botões de Ação) */
+    --secondary-color: #748CAB;
+    /* Azul Suave (30% - Apoio visual) */
+    --border-color: #3E5C76;
+    /* Azul Cinzento (Bordas) */
+
     --success-bg: #dcfce7;
     --success-text: #166534;
     --warning-bg: #fef9c3;
@@ -52,7 +58,8 @@ body {
     transition: all 0.2s;
 }
 
-.nav-btn.active, .nav-btn:hover {
+.nav-btn.active,
+.nav-btn:hover {
     background: var(--border-color);
     color: #fff;
 }
@@ -82,13 +89,14 @@ body {
     margin-bottom: 1rem;
 }
 
-h1 { 
-    font-size: 2rem; 
-    color: var(--action-color); 
+h1 {
+    font-size: 2rem;
+    color: var(--action-color);
     font-weight: 700;
 }
-.header p { 
-    color: var(--border-color); 
+
+.header p {
+    color: var(--border-color);
     font-size: 1.1rem;
 }
 
@@ -97,7 +105,8 @@ h1 {
     background: var(--panel-bg);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(13, 19, 33, 0.05); /* Sombra suave */
+    box-shadow: 0 4px 12px rgba(13, 19, 33, 0.05);
+    /* Sombra suave */
     margin-bottom: 1.5rem;
 }
 
@@ -110,8 +119,8 @@ h1 {
     padding-bottom: 0.5rem;
 }
 
-h2 { 
-    font-size: 1.25rem; 
+h2 {
+    font-size: 1.25rem;
     color: var(--primary-color);
 }
 
@@ -126,7 +135,8 @@ h2 {
     gap: 1.5rem;
     margin-bottom: 1.5rem;
 }
-.flex-row > * {
+
+.flex-row>* {
     flex: 1;
     margin-bottom: 0;
 }
@@ -136,6 +146,7 @@ h2 {
     text-align: center;
     border: 2px solid var(--secondary-color);
 }
+
 .status-indicator {
     display: inline-block;
     width: 16px;
@@ -144,8 +155,14 @@ h2 {
     margin-right: 0.5rem;
     vertical-align: middle;
 }
-.status-indicator.available { background-color: #22c55e; }
-.status-indicator.busy { background-color: #ef4444; }
+
+.status-indicator.available {
+    background-color: #22c55e;
+}
+
+.status-indicator.busy {
+    background-color: #ef4444;
+}
 
 .status-text {
     display: inline-block;
@@ -194,7 +211,8 @@ h2 {
     color: #fff;
     border: 2px solid var(--action-color);
     padding: 0.8rem 1.5rem;
-    border-radius: 0 8px 8px 0; /* Colado à direita */
+    border-radius: 0 8px 8px 0;
+    /* Colado à direita */
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
@@ -213,10 +231,28 @@ h2 {
     font-weight: 500;
     width: 100%;
 }
-.message-box.hidden { display: none; }
-.success { background: var(--success-bg); color: var(--success-text); border: 1px solid #bbf7d0; }
-.error { background: var(--error-bg); color: var(--error-text); border: 1px solid #fecaca; }
-.warning { background: var(--warning-bg); color: var(--warning-text); border: 1px solid #fef08a; }
+
+.message-box.hidden {
+    display: none;
+}
+
+.success {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid #bbf7d0;
+}
+
+.error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid #fecaca;
+}
+
+.warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border: 1px solid #fef08a;
+}
 
 /* Ativo / Fila / Tabela */
 .ativo-container .ativo-card {
@@ -226,69 +262,238 @@ h2 {
     border: 1px solid #fef08a;
     text-align: left;
 }
-.ativo-card h3 { color: var(--warning-text); margin-bottom: 0.5rem; }
+
+.ativo-card h3 {
+    color: var(--warning-text);
+    margin-bottom: 0.5rem;
+}
 
 .fila-list {
     list-style: none;
 }
+
 .fila-list li {
     padding: 0.75rem;
     border-bottom: 1px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
 }
+
 .fila-list li:last-child {
     border-bottom: none;
 }
+
 .empty-state {
     color: var(--secondary-color);
     font-style: italic;
 }
-.text-center { text-align: center; }
+
+.text-center {
+    text-align: center;
+}
 
 /* Tabelas */
 .table-container {
     overflow-x: auto;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
 }
-th, td {
+
+th,
+td {
     padding: 1rem 0.5rem;
     border-bottom: 1px solid #e2e8f0;
 }
+
 th {
     font-weight: 600;
     color: var(--border-color);
 }
+
 tbody tr:hover {
     background-color: #f8fafc;
 }
+
 .badge {
     padding: 0.25rem 0.5rem;
     border-radius: 999px;
     font-size: 0.85rem;
     font-weight: 600;
 }
-.badge-andamento { background: var(--warning-bg); color: var(--warning-text); }
-.badge-concluido { background: var(--success-bg); color: var(--success-text); }
+
+.badge-andamento {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.badge-concluido {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
 
 @media (max-width: 768px) {
     .flex-row {
         flex-direction: column;
     }
+
     .input-group {
         flex-direction: column;
     }
+
     #idAluno {
         border-right: 2px solid var(--border-color);
         border-radius: 8px;
         margin-bottom: 0.5rem;
     }
+
     .btn.primary {
         border-radius: 8px;
         width: 100%;
     }
+}
+
+/* Nome Preview (Busca em tempo real) */
+.nome-preview {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    min-height: 1.5rem;
+    /* Evita pulo de layout */
+    transition: opacity 0.2s ease;
+}
+
+.nome-preview.hidden-preview {
+    opacity: 0;
+}
+
+/* --- CALENDÁRIO --- */
+.container-large {
+    max-width: 1000px;
+}
+
+.cal-panel {
+    padding: 2rem;
+}
+
+.months-tabs {
+    display: flex;
+    justify-content: space-between;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.month-tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.8rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--action-color);
+    border-right: 1px solid var(--border-color);
+    background: transparent;
+    transition: all 0.2s;
+}
+
+.month-tab:last-child {
+    border-right: none;
+}
+
+.month-tab:hover {
+    background: #f8fafc;
+}
+
+.month-tab.active {
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+}
+
+.cal-header-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cal-header-title h2 {
+    font-size: 1.6rem;
+    color: var(--action-color);
+    margin: 0;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.btn-icon:hover {
+    background: #f1f5f9;
+}
+
+.cal-grid,
+.cal-grid-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.cal-grid {
+    margin-bottom: 0.5rem;
+}
+
+.cal-day-header {
+    text-align: center;
+    padding: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--action-color);
+}
+
+.cal-day-cell {
+    text-align: center;
+    padding: 1rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    background: #fff;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.cal-day-cell:hover:not(.empty) {
+    background: var(--bg-color);
+    border-color: var(--primary-color);
+}
+
+.cal-day-cell.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.cal-day-cell.d-active {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 6px rgba(29, 45, 68, 0.2);
+}
+
+.cal-day-cell.today {
+    border: 2px solid var(--primary-color);
+    font-weight: 700;
 }
